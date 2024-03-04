@@ -18,7 +18,7 @@
     "build": "babel src --out-dir dist",
     "format": "prettier-eslint --write '{src}/**/*.js'"
   },
-  "author": "Jarvan <j532547613@gmail.com>",
+  "author": "JiangYahui <j532547613@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "es6-promise-pool": "^2.5.0",

@@ -3,16 +3,16 @@ import fs from 'fs'
 import path from 'path'
 import PromisePool from 'es6-promise-pool'
 
-const BASE_URL = 'http://10.100.186.40:81'
+const BASE_URL = 'http://10.100.186.40:81/upload/picp'
 
-const DEFAULT_INCLUDE = /\.js$|\.map$/
+const DEFAULT_INCLUDE = /\.map$/
 const DEFAULT_TRANSFORM = filename => `~/${filename}`
 const DEFAULT_DELETE_REGEX = /\.map$/
 const DEFAULT_UPLOAD_FILES_CONCURRENCY = Infinity
 
-module.exports = class SentryPlugin {
+module.exports = class UploadPlugin {
   constructor(options) {
-    this.baseSentryURL = options.baseSentryURL || BASE_URL
+    this.baseURL = options.baseURL || BASE_URL
     this.include = options.include || DEFAULT_INCLUDE
     this.exclude = options.exclude
 
@@ -24,7 +24,14 @@ module.exports = class SentryPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.afterEmit.tapPromise('SentryPlugin', async (compilation) => {
+    compiler.hooks.afterEmit.tapPromise('UploadPlugin', async (compilation) => {
+      const errors = this.ensureRequiredOptions()
+
+      if (errors) {
+        this.handleErrors(errors, compilation)
+        return
+      }
+
       const files = this.getFiles(compilation)
 
       try {
@@ -35,7 +42,7 @@ module.exports = class SentryPlugin {
       }
     })
 
-    compiler.hooks.done.tapPromise('SentryPlugin', async (stats) => {
+    compiler.hooks.done.tapPromise('UploadPlugin', async (stats) => {
       if (this.deleteAfterCompile) {
         await this.deleteFiles(stats)
       }
@@ -43,7 +50,7 @@ module.exports = class SentryPlugin {
   }
 
   handleErrors(err, compilation) {
-    const errorMsg = `Sentry Plugin: ${err}`
+    const errorMsg = `WebpackUploadSourcemapPlugin: ${err}`
     if (
       err.statusCode === 409
     ) {
@@ -52,6 +59,10 @@ module.exports = class SentryPlugin {
     else {
       compilation.errors.push(errorMsg)
     }
+  }
+
+  ensureRequiredOptions() {
+    return null
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -74,16 +85,10 @@ module.exports = class SentryPlugin {
   }
 
   isIncludeOrExclude(filename) {
-    const isIncluded = this.include ? this.include.test(filename) : true
+    const isIncluded = this.include ? this.include.test(filename) : false
     const isExcluded = this.exclude ? this.exclude.test(filename) : false
 
     return isIncluded && !isExcluded
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  combineRequestOptions(req, requestOptionsFunc) {
-    const combined = Object.assign({}, req)
-    return combined
   }
 
   uploadFiles(files) {
@@ -99,23 +104,18 @@ module.exports = class SentryPlugin {
   }
 
   async uploadFile({ filePath, name }) {
-    await request(
-      this.combineRequestOptions(
-        {
-          url: `${this.sentryReleaseUrl()}/`,
-          method: 'POST',
-          headers: {},
-          formData: {
-            file: fs.createReadStream(filePath),
-            name: this.filenameTransform(name)
-          }
-        }
-      )
-    )
+    await request({
+      url: `${this.sentryReleaseUrl()}/`,
+      method: 'POST',
+      formData: {
+        file: fs.createReadStream(filePath),
+        name: this.filenameTransform(name)
+      }
+    })
   }
 
   sentryReleaseUrl() {
-    return this.baseSentryURL
+    return `${this.baseURL}`
   }
 
   async deleteFiles(stats) {
@@ -129,7 +129,7 @@ module.exports = class SentryPlugin {
         else {
           // eslint-disable-next-line no-console
           console.warn(
-            `WebpackSentryPlugin: unable to delete '${name}'. ` +
+            `WebpackUploadSourcemapPlugin: unable to delete '${name}'. ` +
             'File does not exist; it may not have been created ' +
             'due to a build error.'
           )
