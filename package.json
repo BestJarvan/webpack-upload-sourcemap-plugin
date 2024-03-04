@@ -19,6 +19,7 @@
     "build": "babel src --out-dir dist",
     "format": "prettier-eslint --write '{src}/**/*.js'"
   },
+  "repository": "https://github.com/BestJarvan/webpack-upload-sourcemap-plugin",
   "license": "MIT",
   "dependencies": {
     "es6-promise-pool": "^2.5.0",
