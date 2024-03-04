@@ -1,0 +1,39 @@
+{
+  "name": "@helper/webpack-upload-sourcemap-plugin",
+  "version": "1.0.0",
+  "description": "Webpack plugin to upload source maps to cloud",
+  "engines": {
+    "node": ">= 6"
+  },
+  "keywords": [
+    "webpack",
+    "upload",
+    "source-map"
+  ],
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "format": "prettier-eslint --write '{src}/**/*.js'"
+  },
+  "author": "Jarvan <j532547613@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "es6-promise-pool": "^2.5.0",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.10.0",
+    "prettier": "^1.11.1",
+    "prettier-eslint-cli": "^4.7.1",
+    "webpack": "^4.44.2"
+  }
+}
