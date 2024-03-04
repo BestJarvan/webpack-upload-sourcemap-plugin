@@ -1,6 +1,7 @@
 {
   "name": "@helper/webpack-upload-sourcemap-plugin",
   "version": "1.0.0",
+  "author": "JiangYahui <j532547613@gmail.com>",
   "description": "Webpack plugin to upload source maps to cloud",
   "engines": {
     "node": ">= 6"
@@ -18,7 +19,6 @@
     "build": "babel src --out-dir dist",
     "format": "prettier-eslint --write '{src}/**/*.js'"
   },
-  "author": "JiangYahui <j532547613@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "es6-promise-pool": "^2.5.0",
