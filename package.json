@@ -1,6 +1,6 @@
 {
   "name": "@bestjarvan/webpack-upload-sourcemap-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "JiangYahui <j532547613@gmail.com>",
   "description": "Webpack plugin to upload source maps to cloud",
   "engines": {
@@ -17,7 +17,8 @@
   ],
   "scripts": {
     "build": "babel src --out-dir dist",
-    "format": "prettier-eslint --write '{src}/**/*.js'"
+    "format": "prettier-eslint --write '{src}/**/*.js'",
+    "prepublishOnly": "npm run build"
   },
   "repository": "https://github.com/BestJarvan/webpack-upload-sourcemap-plugin",
   "license": "MIT",
