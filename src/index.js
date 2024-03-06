@@ -53,14 +53,14 @@ module.exports = class UploadPlugin {
 
   handleErrors(err, compilation) {
     const errorMsg = `WebpackUploadSourcemapPlugin: ${err}`
-    if (
-      err.statusCode === 409
-    ) {
-      compilation.warnings.push(errorMsg)
-    }
-    else {
-      compilation.errors.push(errorMsg)
-    }
+    // if (
+    //   err.statusCode === 409
+    // ) {
+    compilation.warnings.push(errorMsg)
+    // }
+    // else {
+    //   compilation.errors.push(errorMsg)
+    // }
   }
 
   ensureRequiredOptions() {
