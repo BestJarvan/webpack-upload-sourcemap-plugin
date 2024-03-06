@@ -34,6 +34,8 @@ module.exports = class UploadPlugin {
 
       const files = this.getFiles(compilation)
 
+      if (!files.length) return
+
       try {
         await this.uploadFiles(files)
       }
