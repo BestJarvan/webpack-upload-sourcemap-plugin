@@ -107,7 +107,7 @@ module.exports = class UploadPlugin {
 
   async uploadFile({ filePath, name }) {
     await request({
-      url: `${this.sentryReleaseUrl()}/`,
+      url: `${this.releaseUrl()}/`,
       method: 'POST',
       formData: {
         file: fs.createReadStream(filePath),
@@ -116,7 +116,7 @@ module.exports = class UploadPlugin {
     })
   }
 
-  sentryReleaseUrl() {
+  releaseUrl() {
     return `${this.baseURL}`
   }
 
