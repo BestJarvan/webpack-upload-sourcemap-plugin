@@ -106,12 +106,15 @@ module.exports = class UploadPlugin {
   }
 
   async uploadFile({ filePath, name }) {
+    const hash = name.replace(/^\S*\.(\w*)\.js\.map$/, '$1')
+    if (hash === 'worker') return
     await request({
       url: `${this.releaseUrl()}/`,
       method: 'POST',
       formData: {
         file: fs.createReadStream(filePath),
-        name: this.filenameTransform(name)
+        name: this.filenameTransform(name),
+        hash
       }
     })
   }

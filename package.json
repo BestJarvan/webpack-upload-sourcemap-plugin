@@ -1,6 +1,6 @@
 {
   "name": "@bestjarvan/webpack-upload-sourcemap-plugin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "JiangYahui <j532547613@gmail.com>",
   "description": "Webpack plugin to upload source maps to cloud",
   "engines": {
